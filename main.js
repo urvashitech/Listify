@@ -1,32 +1,11 @@
-let taskInput = document.getElementById('taskInput')
-let addInput = document.getElementById('addTaskBtn')
-let taskList = document.getElementById('taskList')
+// Get the input, button, and dynamically created task list
+let taskInput = document.getElementById('taskInput'); // This will come from the user input
+let addInput = document.getElementById('addTaskBtn');
+let container = document.body; // This is the main container
 
-addInput.addEventListener('click', function() {
-    // Get and trim the input value
-    let taskTest = taskInput.value.trim();
-
-    if (taskTest === '') {
-        alert('Enter a Task First');
-        return;
-    }
-
-    // Create a new list item and add it to the task list
-    /*let listItem = document.createElement('li');
-    listItem.textContent = taskTest;*/ // Set the task text
-    taskList.appendChild(listItem); // Add the task to the list
-
-    // Clear the input field
-    taskInput.value = '';
-});
-
-// Get the container where the card will be added
-let container = document.body; // You can target a specific element instead of body
-
-// Create the card element
+// Create the card dynamically
 let card = document.createElement('div');
 card.className = 'card';
-card.id = 'taskList';
 card.style.width = '33rem';
 card.style.marginLeft = '30rem';
 card.style.marginRight = '4rem';
@@ -41,32 +20,57 @@ let cardTitle = document.createElement('h5');
 cardTitle.className = 'card-title';
 cardTitle.textContent = 'Your Tasks';
 
-// Create the input group
+// Create a container for the tasks
+let taskList = document.createElement('ul'); // A list to hold tasks
+taskList.className = 'list-group'; // Bootstrap class for styled lists
+
+// Create the input group for the example description (without the Lorem ipsum)
 let inputGroup = document.createElement('div');
 inputGroup.className = 'input-group mb-3';
 
-// Create the paragraph
-let paragraph = document.createElement('p');
-paragraph.textContent =
-  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum ducimus perspiciatis tempora quasi error esse officiis fugiat? Consequuntur autem at animi? Veritatis, est at ratione qui et provident atque dolore!';
-
-// Create the button
-let deleteButton = document.createElement('button');
-deleteButton.className = 'btn btn-danger rounded-pill';
-deleteButton.id = 'addTaskBtn';
-deleteButton.textContent = 'Delete Task ×';
+// Add the button to add tasks
+let addButton = document.createElement('button');
+addButton.className = 'btn btn-danger'; // Button for adding tasks
+addButton.textContent = 'Add Task';
 
 // Append elements to construct the card
-inputGroup.appendChild(paragraph);
-inputGroup.appendChild(deleteButton);
 cardBody.appendChild(cardTitle);
+cardBody.appendChild(taskList); // Add the task list to the card
 cardBody.appendChild(inputGroup);
 card.appendChild(cardBody);
-
-// Append the card to the container
 container.appendChild(card);
 
+// Add event listener to add tasks
+addInput.addEventListener('click', function () {
+  // Get and trim the input value
+  let taskTest = taskInput.value.trim();
 
+  if (taskTest === '') {
+    alert('Enter a Task First');
+    return;
+  }
 
+  // Create a new list item and add it to the task list
+  let listItem = document.createElement('li');
+  listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+  listItem.textContent = taskTest;
 
+  // Create a delete button for the list item
+  let taskDeleteBtn = document.createElement('button');
+  taskDeleteBtn.className = 'btn btn-sm btn-danger';
+  taskDeleteBtn.textContent = '×';
 
+  // Add delete functionality to the task delete button
+  taskDeleteBtn.addEventListener('click', function () {
+    taskList.removeChild(listItem);
+  });
+
+  // Append the delete button to the list item
+  listItem.appendChild(taskDeleteBtn);
+
+  // Add the new task to the task list
+  taskList.appendChild(listItem);
+
+  // Clear the input field
+  taskInput.value = '';
+});
